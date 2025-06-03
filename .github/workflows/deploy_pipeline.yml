@@ -40,3 +40,14 @@ jobs:
               snow project add-version -x DEVOPS_HOL
           fi
           snow project execute -x --configuration PROD DEVOPS_HOL
+
+  # Deploy pipeline and override environment if branch is main
+      - name: Deploy data pipeline to ${{ github.ref_name }}
+        run: |
+          cd steps
+          if [[ "$(snow project list -x --like "%DEVOPS_HOL%" | grep -c 'No data')" -gt 0 ]]; then
+            snow project create -x DEVOPS_HOL
+          else
+              snow project add-version -x DEVOPS_HOL
+          fi
+          snow project execute -x —-configuration PROD DEVOPS_HOL"
